@@ -1,20 +1,34 @@
 {% extends 'base.html' %}
 {% block title %}登录 - 校园活动管理系统{% endblock %}
-{% block content %}
-<div class="card narrow">
-  <h2>登录</h2>
-  <form method="post">
-    <div class="form-item">
-      <label for="username">用户名</label>
-      <input type="text" id="username" name="username" required
-             value="{{ form.username if form else '' }}">
+{% block navbar %}{% endblock %}
+{% block main %}
+<div class="auth-page">
+  <div class="auth-deco auth-deco-1"></div>
+  <div class="auth-deco auth-deco-2"></div>
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-logo">校</div>
+      <h1>校园活动管理系统</h1>
+      <p>登录你的账号，开启校园活动之旅</p>
     </div>
-    <div class="form-item">
-      <label for="password">密码</label>
-      <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">登录</button>
-    <p class="hint">还没有账号？<a href="{{ url_for('auth.register') }}">去注册</a></p>
-  </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    <form method="post">
+      <div class="form-item">
+        <label for="username">用户名</label>
+        <input type="text" id="username" name="username" required placeholder="请输入用户名"
+               value="{{ form.username if form else '' }}">
+      </div>
+      <div class="form-item">
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" required placeholder="请输入密码">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">登 录</button>
+      <p class="hint auth-hint">还没有账号？<a href="{{ url_for('auth.register') }}">立即注册</a></p>
+    </form>
+  </div>
 </div>
 {% endblock %}

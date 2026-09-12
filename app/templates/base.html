@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  {% block navbar %}
   <header class="navbar">
     <div class="container nav-inner">
       <a class="brand" href="{{ url_for('activities.index') }}">校园活动管理系统</a>
@@ -28,7 +29,9 @@
       </nav>
     </div>
   </header>
+  {% endblock %}
 
+  {% block main %}
   <main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
@@ -37,5 +40,6 @@
     {% endwith %}
     {% block content %}{% endblock %}
   </main>
+  {% endblock %}
 </body>
 </html>

@@ -13,6 +13,7 @@ body {
 .navbar {
   background: #fff;
   border-bottom: 1px solid #E4E3DD;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, .04);
   margin-bottom: 24px;
 }
 .nav-inner {
@@ -98,8 +99,8 @@ body {
   text-decoration: none;
   text-align: center;
 }
-.btn-primary { background: #4A6FD8; color: #fff; }
-.btn-primary:hover { background: #3D5CC0; }
+.btn-primary { background: linear-gradient(135deg, #4A6FD8, #6F93E8); color: #fff; }
+.btn-primary:hover { background: linear-gradient(135deg, #3D5CC0, #5F85DC); }
 .btn-outline { background: #fff; color: #333; border: 1px solid #D5D4CD; }
 .btn-outline:hover { border-color: #9BBBF4; color: #4A6FD8; }
 .btn-danger { color: #C0392B; }
@@ -125,3 +126,54 @@ body {
 .detail-table th { width: 110px; color: #6B7280; font-weight: 500; text-align: left; padding: 8px 12px 8px 0; vertical-align: top; }
 .detail-table td { padding: 8px 0; }
 .action-bar { margin: 16px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* ===== 认证页（登录/注册）===== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: linear-gradient(135deg, #EAF2FC 0%, #E3EDFB 50%, #EAF6EF 100%);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.auth-deco {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: .5;
+  pointer-events: none;
+}
+.auth-deco-1 { width: 340px; height: 340px; background: #9BBBF4; top: -90px; left: -90px; }
+.auth-deco-2 { width: 300px; height: 300px; background: #94D8C3; bottom: -80px; right: -70px; }
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(74, 111, 216, .18);
+  padding: 34px 32px 26px;
+  box-sizing: border-box;
+}
+.auth-brand { text-align: center; margin-bottom: 20px; }
+.auth-logo {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #4A6FD8, #7FA3EC);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(74, 111, 216, .35);
+}
+.auth-brand h1 { font-size: 19px; color: #1A1B1C; margin-bottom: 4px; }
+.auth-brand p { font-size: 12.5px; color: #8A93A6; }
+.auth-hint { text-align: center; }
+.auth-hint a { color: #4A6FD8; font-weight: 600; }
