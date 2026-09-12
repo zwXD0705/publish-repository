@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-"""端到端冒烟测试：覆盖 REQ-01~06 核心业务链路"""
+"""端到端冒烟测试：覆盖 REQ-01~06 核心业务链路（使用独立测试数据库，不影响开发数据）"""
+import os
 import sys
 from datetime import datetime, timedelta
+
+os.environ['CAMPUS_DATABASE_URI'] = 'sqlite:///smoke_test.db'
 
 sys.path.insert(0, r"C:/Users/a'su's/Doubao/chats/2026-09-11/new-chat/campus_activity")
 
@@ -141,4 +144,9 @@ check('REQ-05 学生端状态同步为已通过', '已通过' in r.get_data(as_t
 print("\n==== 结果汇总 ====")
 passed = sum(1 for _, ok, _ in results if ok)
 print("通过 %d / %d" % (passed, len(results)))
+try:
+    os.remove(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 'instance', 'smoke_test.db'))
+except OSError:
+    pass
 sys.exit(0 if passed == len(results) else 1)
