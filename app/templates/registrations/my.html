@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}我的报名 - 校园活动管理系统{% endblock %}
+{% block content %}
+<h2>我的报名</h2>
+{% if registrations %}
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>活动名称</th>
+        <th>开始时间</th>
+        <th>地点</th>
+        <th>报名时间</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in registrations %}
+        <tr>
+          <td><a href="{{ url_for('activities.detail', activity_id=r.activity_id) }}">{{ r.activity.title }}</a></td>
+          <td>{{ r.activity.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ r.activity.location }}</td>
+          <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>
+            <span class="tag tag-{{ r.status }}">{{ {'pending':'待审核','approved':'已通过','rejected':'已驳回','cancelled':'已取消'}.get(r.status, r.status) }}</span>
+          </td>
+          <td>
+            {% if r.status == 'pending' %}
+              <form method="post" action="{{ url_for('registrations.cancel', activity_id=r.activity_id) }}" style="display:inline;">
+                <button type="submit" class="btn btn-outline btn-danger">取消报名</button>
+              </form>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="empty">还没有报名记录，去<a href="{{ url_for('activities.index') }}">活动列表</a>看看吧。</p>
+{% endif %}
+{% endblock %}
