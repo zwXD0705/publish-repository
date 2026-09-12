@@ -72,6 +72,13 @@ r = client.post('/activities/publish', data={
     'signup_deadline': (start + timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M'),
     'capacity': 10, 'detail': ''}, follow_redirects=True)
 check('REQ-04 截止晚于开始被拒', '报名截止时间必须早于活动开始时间' in r.get_data(as_text=True))
+r = client.post('/activities/publish', data={
+    'title': '过期活动', 'category': '讲座', 'location': '教室',
+    'start_time': (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%dT%H:%M'),
+    'end_time': (datetime.now() + timedelta(days=1, hours=2)).strftime('%Y-%m-%dT%H:%M'),
+    'signup_deadline': (datetime.now() - timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M'),
+    'capacity': 5, 'detail': ''}, follow_redirects=True)
+check('REQ-04 报名截止早于当前被拒', '报名截止时间必须晚于当前时间' in r.get_data(as_text=True))
 client.get('/auth/logout')
 
 # --- REQ-02 学生浏览 ---

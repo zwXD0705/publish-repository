@@ -55,6 +55,9 @@ def publish():
         if signup_deadline >= start_time:
             flash('报名截止时间必须早于活动开始时间', 'warning')
             return render_template('activities/publish.html', form=request.form)
+        if signup_deadline <= datetime.now():
+            flash('报名截止时间必须晚于当前时间', 'warning')
+            return render_template('activities/publish.html', form=request.form)
 
         activity = Activity(
             title=title, category=category, location=location, detail=detail,

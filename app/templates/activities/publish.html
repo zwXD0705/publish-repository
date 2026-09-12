@@ -43,4 +43,16 @@
     <button type="submit" class="btn btn-primary btn-block">发布活动</button>
   </form>
 </div>
+<script>
+(function () {
+  var now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  var min = now.toISOString().slice(0, 16);
+  var ids = ['start_time', 'end_time', 'signup_deadline'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el) el.min = min;
+  }
+})();
+</script>
 {% endblock %}
