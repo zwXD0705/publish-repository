@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}活动列表 - 校园活动管理系统{% endblock %}
+{% block content %}
+<h2>活动列表</h2>
+{% if session.get('role') == 'teacher' %}
+  <p><a class="btn btn-primary" href="{{ url_for('activities.publish') }}">+ 发布活动</a></p>
+{% endif %}
+{% if activities %}
+  <div class="card-list">
+    {% for a in activities %}
+      <a class="card activity-card" href="{{ url_for('activities.detail', activity_id=a.id) }}">
+        <div class="activity-card-head">
+          <span class="activity-title">{{ a.title }}</span>
+          <span class="tag tag-{{ a.state }}">{{ {'open':'报名中','closed':'已截止','finished':'已结束'}.get(a.state, a.state) }}</span>
+        </div>
+        <div class="activity-meta">
+          <span>{{ a.start_time.strftime('%Y-%m-%d %H:%M') }} 至 {{ a.end_time.strftime('%H:%M') }}</span>
+          <span>{{ a.location }}</span>
+          <span>已报名 {{ a.registered_count }}/{{ a.capacity }}</span>
+          {% if a.category %}<span>{{ a.category }}</span>{% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">暂无活动，教师可以点击右上角发布。</p>
+{% endif %}
+{% endblock %}

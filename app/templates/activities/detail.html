@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}{{ activity.title }} - 校园活动管理系统{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="activity-card-head">
+    <h2>{{ activity.title }}</h2>
+    <span class="tag tag-{{ activity.state }}">{{ {'open':'报名中','closed':'已截止','finished':'已结束'}.get(activity.state, activity.state) }}</span>
+  </div>
+  <table class="detail-table">
+    <tr><th>类别</th><td>{{ activity.category or '—' }}</td></tr>
+    <tr><th>地点</th><td>{{ activity.location }}</td></tr>
+    <tr><th>开始时间</th><td>{{ activity.start_time.strftime('%Y-%m-%d %H:%M') }}</td></tr>
+    <tr><th>结束时间</th><td>{{ activity.end_time.strftime('%Y-%m-%d %H:%M') }}</td></tr>
+    <tr><th>报名截止</th><td>{{ activity.signup_deadline.strftime('%Y-%m-%d %H:%M') }}</td></tr>
+    <tr><th>人数</th><td>{{ activity.registered_count }} / {{ activity.capacity }}</td></tr>
+    <tr><th>发布教师</th><td>{{ activity.teacher.real_name }}</td></tr>
+    <tr><th>活动详情</th><td>{{ activity.detail or '—' }}</td></tr>
+  </table>
+
+  {% if session.get('role') == 'student' %}
+    <div class="action-bar">
+      {% if reg and reg.status != 'cancelled' %}
+        {% if reg.status == 'pending' %}
+          <span class="tag tag-pending">已报名 · 待审核</span>
+          <form method="post" action="{{ url_for('registrations.cancel', activity_id=activity.id) }}"
+                style="display:inline;">
+            <button type="submit" class="btn btn-outline btn-danger">取消报名</button>
+          </form>
+        {% elif reg.status == 'approved' %}
+          <span class="tag tag-approved">报名已通过</span>
+        {% elif reg.status == 'rejected' %}
+          <span class="tag tag-rejected">报名已被驳回</span>
+        {% endif %}
+      {% elif activity.state == 'open' and activity.registered_count < activity.capacity %}
+        <form method="post" action="{{ url_for('registrations.signup', activity_id=activity.id) }}">
+          <button type="submit" class="btn btn-primary">立即报名</button>
+        </form>
+      {% elif activity.registered_count >= activity.capacity %}
+        <span class="tag tag-closed">人数已满</span>
+      {% else %}
+        <span class="tag tag-closed">当前不可报名</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if session.get('role') == 'teacher' and activity.teacher_id == session.get('user_id') %}
+    <div class="action-bar">
+      <a class="btn btn-outline" href="{{ url_for('activities.manage', activity_id=activity.id) }}">查看报名名单</a>
+    </div>
+  {% endif %}
+
+  <p><a href="{{ url_for('activities.index') }}">← 返回活动列表</a></p>
+</div>
+{% endblock %}

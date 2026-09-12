@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}登录 - 校园活动管理系统{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h2>登录</h2>
+  <form method="post">
+    <div class="form-item">
+      <label for="username">用户名</label>
+      <input type="text" id="username" name="username" required
+             value="{{ form.username if form else '' }}">
+    </div>
+    <div class="form-item">
+      <label for="password">密码</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">登录</button>
+    <p class="hint">还没有账号？<a href="{{ url_for('auth.register') }}">去注册</a></p>
+  </form>
+</div>
+{% endblock %}

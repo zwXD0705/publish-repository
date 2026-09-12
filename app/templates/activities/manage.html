@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}报名管理 - {{ activity.title }}{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>报名管理：{{ activity.title }}</h2>
+  <p class="hint">
+    {{ activity.start_time.strftime('%Y-%m-%d %H:%M') }} ｜ {{ activity.location }}
+    ｜ 已报名 {{ activity.registered_count }}/{{ activity.capacity }}
+    ｜ 状态：{{ {'open':'报名中','closed':'已截止','finished':'已结束'}.get(activity.state, activity.state) }}
+  </p>
+
+  {% if registrations %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>学生姓名</th>
+          <th>用户名</th>
+          <th>报名时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in registrations %}
+          <tr>
+            <td>{{ r.student.real_name }}</td>
+            <td>{{ r.student.username }}</td>
+            <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              <span class="tag tag-{{ r.status }}">{{ {'pending':'待审核','approved':'已通过','rejected':'已驳回','cancelled':'已取消'}.get(r.status, r.status) }}</span>
+            </td>
+            <td>
+              {% if r.status == 'pending' %}
+                <form method="post" action="{{ url_for('registrations.review', activity_id=activity.id) }}" style="display:inline;">
+                  <input type="hidden" name="registration_id" value="{{ r.id }}">
+                  <button type="submit" name="action" value="approve" class="btn btn-primary">通过</button>
+                  <button type="submit" name="action" value="reject" class="btn btn-outline btn-danger">驳回</button>
+                </form>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">还没有学生报名该活动。</p>
+  {% endif %}
+  <p><a href="{{ url_for('activities.detail', activity_id=activity.id) }}">← 返回活动详情</a></p>
+</div>
+{% endblock %}

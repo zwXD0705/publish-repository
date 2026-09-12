@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}发布活动 - 校园活动管理系统{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h2>发布活动</h2>
+  <form method="post">
+    <div class="form-item">
+      <label for="title">活动名称 *</label>
+      <input type="text" id="title" name="title" required
+             value="{{ form.title if form else '' }}">
+    </div>
+    <div class="form-item">
+      <label for="category">类别</label>
+      <input type="text" id="category" name="category"
+             value="{{ form.category if form else '' }}" placeholder="如：讲座 / 比赛 / 社团活动">
+    </div>
+    <div class="form-item">
+      <label for="location">地点 *</label>
+      <input type="text" id="location" name="location" required
+             value="{{ form.location if form else '' }}">
+    </div>
+    <div class="form-item">
+      <label for="start_time">开始时间 *</label>
+      <input type="datetime-local" id="start_time" name="start_time" required>
+    </div>
+    <div class="form-item">
+      <label for="end_time">结束时间 *</label>
+      <input type="datetime-local" id="end_time" name="end_time" required>
+    </div>
+    <div class="form-item">
+      <label for="signup_deadline">报名截止时间 *（须早于活动开始时间）</label>
+      <input type="datetime-local" id="signup_deadline" name="signup_deadline" required>
+    </div>
+    <div class="form-item">
+      <label for="capacity">人数上限 *</label>
+      <input type="number" id="capacity" name="capacity" min="1" required
+             value="{{ form.capacity if form else '50' }}">
+    </div>
+    <div class="form-item">
+      <label for="detail">活动详情</label>
+      <textarea id="detail" name="detail" rows="4">{{ form.detail if form else '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">发布活动</button>
+  </form>
+</div>
+{% endblock %}
