@@ -43,6 +43,13 @@ def signup(activity_id):
         flash('你已报名该活动，请勿重复报名', 'warning')
         return redirect(url_for('activities.detail', activity_id=activity_id))
 
+    if exists:
+        # 已取消过的报名记录直接复活，避免与数据库唯一约束冲突
+        exists.status = 'pending'
+        db.session.commit()
+        flash('报名成功，等待教师审核', 'success')
+        return redirect(url_for('registrations.my'))
+
     reg = Registration(activity_id=activity_id, student_id=session['user_id'])
     db.session.add(reg)
     try:
